@@ -1,2 +1,4 @@
-presence-analyzer-aadamski
-==========================
+Presence Analyzer
+=================
+
+Calculate and show employees presence statistics.
