@@ -53,6 +53,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(len(data), 2)
         self.assertDictEqual(data[0], {u'user_id': 10, u'name': u'User 10'})
 
+    def test_api_mean_start_end(self):
+        """
+        Test groups presence entries by weekday.
+        """
+        resp = self.client.get('/api/v1/presence_start_end/10')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, 'application/json')
+        data = json.loads(resp.data)
+        self.assertEqual(data[0], [u'Mon', 0, 0])
+
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """
@@ -83,6 +93,18 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertItemsEqual(data[10][sample_date].keys(), ['start', 'end'])
         self.assertEqual(data[10][sample_date]['start'],
                          datetime.time(9, 39, 5))
+
+    def test_group_by_weekday_start_end(self):
+        """
+        Test groups presence entries by weekday.
+        """
+        data = utils.get_data()
+        result = utils.group_by_weekday_start_end(data[10])
+        self.assertIsInstance(result, dict)
+        self.assertEqual(result.keys(), range(7))
+        self.assertEqual(len(result[0]), 2)
+        self.assertEqual(result[3], [38926.0, 62631.0])
+        self.assertEqual(result[6], [0, 0])
 
 
 def suite():
