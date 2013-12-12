@@ -23,9 +23,9 @@
         <div id="header">
             <h1>Presence analyzer</h1>
             <ul>
-                <li{% if active_page == 'presence_weekday'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='/presence_weekday.html') }}">Presence by weekday</a></li>
-                <li{% if active_page == 'mean_time_weekday'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='/mean_time_weekday.html') }}">Presence mean time</a></li>
-                <li{% if active_page == 'presence_start_end'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='/presence_start_end.html') }}">Presence start-end</a></li>
+                <li{% if active_page == 'presence_weekday'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='presence_weekday.html') }}">Presence by weekday</a></li>
+                <li{% if active_page == 'mean_time_weekday'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='mean_time_weekday.html') }}">Presence mean time</a></li>
+                <li{% if active_page == 'presence_start_end'%} id="selected"{% endif %}><a href="{{ url_for('mainpage', name='presence_start_end.html') }}">Presence start-end</a></li>
             </ul>
         </div>
         <div id="content">

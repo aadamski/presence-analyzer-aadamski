@@ -13,7 +13,7 @@
                     if(selected_user) {
                         loading.show();
                         chart_div.hide();
-                        $.getJSON("/api/v1/presence_weekday/"+selected_user, function(result) {
+                        $.getJSON("{{ url_for('presence_weekday_view') }}"+selected_user, function(result) {
                             var data = google.visualization.arrayToDataTable(result);
                             var options = {};
                             chart_div.show();
@@ -31,32 +31,3 @@
 {% set active_page = 'presence_weekday' %}
 
 {% block content_title %}Presence mean time by weekday{% endblock %}
-
-<body>
-    <div id="main">
-        <div id="header">
-            <h1>Presence analyzer</h1>
-
-            <ul>
-                <li id="selected"><a href="/static/presence_weekday.html">Presence by weekday</a></li>
-                <li><a href="/static/mean_time_weekday.html">Presence mean time</a></li>
-                <li><a href="/static/presence_start_end.html">Presence start-end</a></li>
-            </ul>
-        </div>
-        <div id="content">
-            <h2>Presence by weekday</h2>
-            <p>
-                <select id="user_id" style="display: none">
-                    <option value="">--</option>
-                </select>
-                <div id="chart_div" style="display: none">
-                </div>
-                <div id="loading">
-                    <img src="/static/img/loading.gif" />
-                </div>
-            </p>
-        </div>
-
-    </div>
-</body>
-</html>

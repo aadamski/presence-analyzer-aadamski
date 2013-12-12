@@ -40,11 +40,15 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         """
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 302)
-        assert resp.headers['Location'].endswith('/presence_weekday.html')
+        self.assertTrue(
+            resp.headers['Location'].endswith('/presence_weekday.html')
+        )
 
         resp = self.client.get('')
         self.assertEqual(resp.status_code, 302)
-        assert resp.headers['Location'].endswith('/presence_weekday.html')
+        self.assertTrue(
+            resp.headers['Location'].endswith('/presence_weekday.html')
+        )
 
     def test_mainpage_view(self):
         """
@@ -87,10 +91,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         Test groups presence entries by weekday.
         """
         resp = self.client.get('/api/v1/presence_start_end/10')
-        self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(data[0], [u'Mon', 0, 0])
+
+    def test_api_bad_request(self):
+        """
+        Test error
+        """
+        resp = self.client.get('/api/v1/presence_start_end/')
+        self.assertEqual(resp.status_code, 400)
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):

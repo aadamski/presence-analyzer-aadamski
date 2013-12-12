@@ -4,7 +4,7 @@ Defines views.
 """
 
 import calendar
-from flask import redirect, render_template, url_for, make_response
+from flask import redirect, render_template, url_for, make_response, abort
 from jinja2 import TemplateNotFound
 
 from presence_analyzer.main import app
@@ -42,13 +42,17 @@ def users_view():
             for i in data.keys()]
 
 
+@app.route('/api/v1/mean_time_weekday/', methods=['GET'])
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
 @jsonify
-def mean_time_weekday_view(user_id):
+def mean_time_weekday_view(user_id=None):
     """
     Returns mean presence time of given user grouped by weekday.
     """
     data = get_data()
+    if not user_id:
+        raise abort(400)
+
     if user_id not in data:
         log.debug('User %s not found!', user_id)
         return []
@@ -56,17 +60,20 @@ def mean_time_weekday_view(user_id):
     weekdays = group_by_weekday(data[user_id])
     result = [(calendar.day_abbr[weekday], mean(intervals))
               for weekday, intervals in weekdays.items()]
-
     return result
 
 
+@app.route('/api/v1/presence_weekday/', methods=['GET'])
 @app.route('/api/v1/presence_weekday/<int:user_id>', methods=['GET'])
 @jsonify
-def presence_weekday_view(user_id):
+def presence_weekday_view(user_id=None):
     """
     Returns total presence time of given user grouped by weekday.
     """
     data = get_data()
+    if not user_id:
+        raise abort(400)
+
     if user_id not in data:
         log.debug('User %s not found!', user_id)
         return []
@@ -79,13 +86,17 @@ def presence_weekday_view(user_id):
     return result
 
 
+@app.route('/api/v1/presence_start_end/', methods=['GET'])
 @app.route('/api/v1/presence_start_end/<int:user_id>', methods=['GET'])
 @jsonify
-def presence_start_end_view(user_id):
+def presence_start_end_view(user_id=None):
     """
     Returns mean presence time of given user grouped by weekday.
     """
     data = get_data()
+    if not user_id:
+        raise abort(400)
+
     if user_id not in data:
         log.debug('User %s not found!', user_id)
         return []
