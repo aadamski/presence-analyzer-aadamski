@@ -160,7 +160,6 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(data[10][sample_date]['start'],
                          datetime.time(9, 39, 5))
 
-<<<<<<< HEAD
     def test_seconds_since_midnight(self):
         """
         Test function calculates amount of seconds since midnight.
@@ -231,28 +230,25 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(utils.mean(items), 0.0)
 
     def test_group_by_weekday(self):
-=======
-    def test_group_by_weekday_start_end(self):
->>>>>>> master
-        """
-        Test groups presence entries by weekday.
-        """
         data = utils.get_data()
-<<<<<<< HEAD
         result = utils.group_by_weekday(data[11])
         self.assertEqual(result.keys(), range(7))
         self.assertEqual(result[0], [24123])
         self.assertEqual(result[1], [16564])
         self.assertEqual(result[2], [25321])
         self.assertEqual(result[3], [22969, 22999])
-=======
+
+    def test_group_by_weekday_start_end(self):
+        """
+        Test groups presence entries by weekday.
+        """
+        data = utils.get_data()
         result = utils.group_by_weekday_start_end(data[10])
         self.assertIsInstance(result, dict)
         self.assertEqual(result.keys(), range(7))
         self.assertEqual(len(result[0]), 2)
         self.assertEqual(result[3], [38926.0, 62631.0])
         self.assertEqual(result[6], [0, 0])
->>>>>>> master
 
 
 def suite():
