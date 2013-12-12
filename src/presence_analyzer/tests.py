@@ -57,14 +57,23 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         """
         Test mean time weekday view.
         """
+        msg = u'%s element (%s) of list is not an instance of %s'
         resp = self.client.get('/api/v1/mean_time_weekday/10')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 7)
         for index in range(7):
-            self.assertIsInstance(data[index][0], unicode)
-            self.assertIsInstance(data[index][1], float)
+            self.assertIsInstance(
+                data[index][0],
+                unicode,
+                msg % (index, type(data[index][0]), u'unicode')
+            )
+            self.assertIsInstance(
+                data[index][1],
+                float,
+                msg % (index, type(data[index][0]), u'float')
+            )
 
     def test_api_mean_time_weekday_fake(self):
         """
@@ -80,6 +89,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         """
         Test presence weekday view.
         """
+        msg = u'%s element (%s) of list is not an instance of %s'
         resp = self.client.get('/api/v1/presence_weekday/11')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
@@ -88,8 +98,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertIsInstance(data, list)
         self.assertEqual(data[0], [u'Weekday', u'Presence (s)'])
         for index in range(1, 8):
-            self.assertIsInstance(data[index][0], unicode)
-            self.assertIsInstance(data[index][1], int)
+            self.assertIsInstance(
+                data[index][0],
+                unicode,
+                msg % (index, type(data[index][0]), u'unicode')
+            )
+            self.assertIsInstance(
+                data[index][1],
+                int,
+                msg % (index, type(data[index][1]), u'int')
+            )
 
     def test_api_presence_weekday_fake(self):
         """
@@ -160,10 +178,20 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             ([
                 datetime.datetime(2013, 12, 12, 0, 0, 0),
                 datetime.datetime(2013, 12, 12, 23, 59, 59)
-            ], 86399),
+            ], 86399)
         ]
-        for items, result in test_values:
-            self.assertEqual(utils.interval(items[0], items[1]), result)
+        self.assertEqual(
+            utils.interval(test_values[0][0][0], test_values[0][0][1]),
+            test_values[0][1]
+        )
+        self.assertEqual(
+            utils.interval(test_values[1][0][0], test_values[1][0][1]),
+            test_values[1][1]
+        )
+        self.assertEqual(
+            utils.interval(test_values[2][0][0], test_values[2][0][1]),
+            test_values[2][1]
+        )
 
     def test_mean(self):
         """
@@ -177,8 +205,12 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             ([0, 244, 3214, 21568, 5410, 5120], 5926.0),
             ([6548, 54884, 2215, 32654, 21545, 1230], 19846.0),
         ]
-        for items, result in test_values:
-            self.assertEqual(utils.mean(items), result)
+        self.assertEqual(utils.mean(test_values[0][0]), test_values[0][1])
+        self.assertEqual(utils.mean(test_values[1][0]), test_values[1][1])
+        self.assertEqual(utils.mean(test_values[2][0]), test_values[2][1])
+        self.assertEqual(utils.mean(test_values[3][0]), test_values[3][1])
+        self.assertEqual(utils.mean(test_values[4][0]), test_values[4][1])
+        self.assertEqual(utils.mean(test_values[5][0]), test_values[5][1])
 
     def test_mean_zero_list(self):
         """
@@ -192,11 +224,12 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Test groups presence entries by weekday.
         """
         data = utils.get_data()
-        result = utils.group_by_weekday(data[10])
+        result = utils.group_by_weekday(data[11])
         self.assertEqual(result.keys(), range(7))
-        self.assertEqual(result[0], [])
-        self.assertEqual(result[1], [30047])
-        self.assertEqual(result[2], [24465])
+        self.assertEqual(result[0], [24123])
+        self.assertEqual(result[1], [16564])
+        self.assertEqual(result[2], [25321])
+        self.assertEqual(result[3], [22969, 22999])
 
 
 def suite():
