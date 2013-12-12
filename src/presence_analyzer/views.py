@@ -4,22 +4,27 @@ Defines views.
 """
 
 import calendar
-from flask import redirect
+from flask import redirect, render_template
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (jsonify, get_data, mean,
-    group_by_weekday, group_by_weekday_start_end)
+                                     group_by_weekday,
+                                     group_by_weekday_start_end)
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
 @app.route('/')
-def mainpage():
+@app.route('/<name>')
+def mainpage(name=None):
     """
-    Redirects to front page.
+    Redirects to default front page if name equals None or return render
+    template from templates directory.
     """
-    return redirect('/static/presence_weekday.html')
+    if not name:
+        return redirect('/presence_weekday.html')
+    return render_template(name)
 
 
 @app.route('/api/v1/users', methods=['GET'])
