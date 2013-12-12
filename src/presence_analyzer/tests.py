@@ -34,13 +34,42 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         """
         pass
 
-    def test_mainpage(self):
+    def test_mainpage_redirect(self):
         """
         Test main page redirect.
         """
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 302)
         assert resp.headers['Location'].endswith('/presence_weekday.html')
+
+        resp = self.client.get('')
+        self.assertEqual(resp.status_code, 302)
+        assert resp.headers['Location'].endswith('/presence_weekday.html')
+
+    def test_mainpage_view(self):
+        """
+        Test main page redirect.
+        """
+        resp = self.client.get('/presence_start_end.html')
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get('/presence_weekday.html')
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get('/mean_time_weekday.html')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_mainpage_error(self):
+        """
+        Test raises error when page or resource not found
+        """
+        resp = self.client.get('/this_site_does_not_exist.html')
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.data, 'Not Found')
+
+        resp = self.client.get('/favicon.ico')
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.data, 'Not Found')
 
     def test_api_users(self):
         """

@@ -4,7 +4,8 @@ Defines views.
 """
 
 import calendar
-from flask import redirect, render_template
+from flask import redirect, render_template, url_for, make_response
+from jinja2 import TemplateNotFound
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (jsonify, get_data, mean,
@@ -23,8 +24,11 @@ def mainpage(name=None):
     template from templates directory.
     """
     if not name:
-        return redirect('/presence_weekday.html')
-    return render_template(name)
+        return redirect(url_for('mainpage', name='presence_weekday.html'))
+    try:
+        return render_template(name)
+    except TemplateNotFound:
+        return make_response('Not Found', 404)
 
 
 @app.route('/api/v1/users', methods=['GET'])
