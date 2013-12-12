@@ -112,4 +112,4 @@ def mean(items):
     """
     Calculates arithmetic mean. Returns zero for empty lists.
     """
-    return float(sum(items)) / len(items) if len(items) > 0 else 0
+    return float(sum(items)) / len(items) if len(items) > 0 else 0.0
