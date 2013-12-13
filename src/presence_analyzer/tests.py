@@ -91,7 +91,13 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(len(data), 2)
         self.assertDictEqual(
             data[0],
-            {u'user_id': 10, u'name': u'Maciej Zięba'}
+            {
+                u'user_id': 10,
+                'info': {
+                    u'name': u'Maciej Zięba',
+                    u'avatar': u'/api/images/users/10'
+                }
+            }
         )
 
     def test_api_mean_time_weekday(self):
