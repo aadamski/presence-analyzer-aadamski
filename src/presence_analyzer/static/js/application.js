@@ -10,7 +10,7 @@ function parseInterval(value) {
         $.getJSON("/api/v1/users", function(result) {
             var dropdown = $("#user_id");
             $.each(result, function(item) {
-                dropdown.append($("<option />").val(this.user_id).text(this.name));
+                dropdown.append($("<option />").val(this.user_id).text(this.info.name));
             });
             dropdown.show();
             loading.hide();

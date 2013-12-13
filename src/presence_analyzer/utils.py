@@ -7,6 +7,7 @@ import csv
 from json import dumps
 from functools import wraps
 from datetime import datetime
+from lxml import etree
 
 from flask import Response
 
@@ -46,6 +47,15 @@ def get_data():
     }
     """
     data = {}
+    tree = etree.parse(app.config['DATA_XML'])
+
+    xml_data = {
+        int(el.attrib['id']): {
+            ch.tag: unicode(ch.text) for ch in el.getchildren()
+        }
+        for el in tree.xpath('//intranet/users/user')
+    }
+
     with open(app.config['DATA_CSV'], 'r') as csvfile:
         presence_reader = csv.reader(csvfile, delimiter=',')
         for i, row in enumerate(presence_reader):
@@ -61,7 +71,15 @@ def get_data():
             except (ValueError, TypeError):
                 log.debug('Problem with line %d: ', i, exc_info=True)
 
-            data.setdefault(user_id, {})[date] = {'start': start, 'end': end}
+            data.setdefault(user_id, {'dates': {}})['dates'][date] = {
+                'start': start, 'end': end
+            }
+
+        for user_id in data.keys():
+            data[user_id]['info'] = xml_data.get(user_id, {
+                'name': 'User {0}'.format(user_id),
+                'avatar': '/api/images/users/0'
+            })
 
     return data
 
@@ -71,9 +89,9 @@ def group_by_weekday(items):
     Groups presence entries by weekday.
     """
     result = {i: [] for i in range(7)}
-    for date in items:
-        start = items[date]['start']
-        end = items[date]['end']
+    for date in items['dates']:
+        start = items['dates'][date]['start']
+        end = items['dates'][date]['end']
         result[date.weekday()].append(interval(start, end))
     return result
 
@@ -84,9 +102,9 @@ def group_by_weekday_start_end(items):
     """
     result = {i: {'start': [], 'end': []} for i in range(7)}
 
-    for date in items:
-        start = items[date]['start']
-        end = items[date]['end']
+    for date in items['dates']:
+        start = items['dates'][date]['start']
+        end = items['dates'][date]['end']
         result[date.weekday()]['start'].append(seconds_since_midnight(start))
         result[date.weekday()]['end'].append(seconds_since_midnight(end))
 
