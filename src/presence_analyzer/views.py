@@ -8,8 +8,7 @@ from flask import redirect, render_template, url_for, make_response, abort
 from jinja2 import TemplateNotFound
 
 from presence_analyzer.main import app
-from presence_analyzer.utils import (jsonify, get_data, mean,
-                                     group_by_weekday,
+from presence_analyzer.utils import (jsonify, get_data, mean, group_by_weekday,
                                      group_by_weekday_start_end)
 
 import logging

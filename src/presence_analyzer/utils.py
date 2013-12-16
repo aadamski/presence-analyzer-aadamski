@@ -35,19 +35,29 @@ def get_data():
     It creates structure like this:
     data = {
         'user_id': {
-            datetime.date(2013, 10, 1): {
-                'start': datetime.time(9, 0, 0),
-                'end': datetime.time(17, 30, 0),
+            dates: {
+                datetime.date(2013, 10, 1): {
+                    'start': datetime.time(9, 0, 0),
+                    'end': datetime.time(17, 30, 0),
+                },
+                datetime.date(2013, 10, 2): {
+                    'start': datetime.time(8, 30, 0),
+                    'end': datetime.time(16, 45, 0),
+                },
             },
-            datetime.date(2013, 10, 2): {
-                'start': datetime.time(8, 30, 0),
-                'end': datetime.time(16, 45, 0),
-            },
+            info: {
+                'name': 'User 0',
+                'avatar': '/api/images/users/0'
+            }
         }
     }
     """
     data = {}
     tree = etree.parse(app.config['DATA_XML'])
+    server_url = u'%s://%s' % (
+        tree.xpath('//intranet/server/protocol')[0].text,
+        tree.xpath('//intranet/server/host')[0].text
+    )
 
     xml_data = {
         int(el.attrib['id']): {
@@ -80,6 +90,10 @@ def get_data():
                 'name': 'User {0}'.format(user_id),
                 'avatar': '/api/images/users/0'
             })
+            data[user_id]['info']['avatar'] = u'%s%s' % (
+                server_url,
+                data[user_id]['info']['avatar']
+            )
 
     return data
 

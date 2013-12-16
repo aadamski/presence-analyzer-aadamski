@@ -95,7 +95,8 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
                 u'user_id': 10,
                 'info': {
                     u'name': u'Maciej Zięba',
-                    u'avatar': u'/api/images/users/10'
+                    u'avatar': u'https://intranet.stxnext.pl/' +
+                    'api/images/users/10'
                 }
             }
         )
@@ -219,9 +220,15 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(data[10]['dates'][sample_date]['start'],
                          datetime.time(9, 39, 5))
         self.assertEqual(data[10]['info']['name'], u'Maciej Zięba')
-        self.assertEqual(data[10]['info']['avatar'], u'/api/images/users/10')
+        self.assertEqual(
+            data[10]['info']['avatar'],
+            u'https://intranet.stxnext.pl/api/images/users/10'
+        )
         self.assertEqual(data[11]['info']['name'], u'Maciej Dziergwa')
-        self.assertEqual(data[11]['info']['avatar'], u'/api/images/users/11')
+        self.assertEqual(
+            data[11]['info']['avatar'],
+            u'https://intranet.stxnext.pl/api/images/users/11'
+        )
 
     def test_seconds_since_midnight(self):
         """
