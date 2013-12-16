@@ -34,13 +34,46 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         """
         pass
 
-    def test_mainpage(self):
+    def test_mainpage_redirect(self):
         """
         Test main page redirect.
         """
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 302)
-        assert resp.headers['Location'].endswith('/presence_weekday.html')
+        self.assertTrue(
+            resp.headers['Location'].endswith('/presence_weekday.html')
+        )
+
+        resp = self.client.get('')
+        self.assertEqual(resp.status_code, 302)
+        self.assertTrue(
+            resp.headers['Location'].endswith('/presence_weekday.html')
+        )
+
+    def test_mainpage_view(self):
+        """
+        Test main page redirect.
+        """
+        resp = self.client.get('/presence_start_end.html')
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get('/presence_weekday.html')
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get('/mean_time_weekday.html')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_mainpage_error(self):
+        """
+        Test raises error when page or resource not found
+        """
+        resp = self.client.get('/this_site_does_not_exist.html')
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.data, 'Not Found')
+
+        resp = self.client.get('/favicon.ico')
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.data, 'Not Found')
 
     def test_api_users(self):
         """
@@ -124,10 +157,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         Test groups presence entries by weekday.
         """
         resp = self.client.get('/api/v1/presence_start_end/10')
-        self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(data[0], [u'Mon', 0, 0])
+
+    def test_api_bad_request(self):
+        """
+        Test error
+        """
+        resp = self.client.get('/api/v1/presence_start_end/')
+        self.assertEqual(resp.status_code, 400)
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
