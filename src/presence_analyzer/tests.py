@@ -89,6 +89,17 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 2)
+        self.assertDictEqual(data[0], {u'user_id': 10, 'name': u'User 10'})
+
+    def test_api_users_v2(self):
+        """
+        Test users listing (API v2).
+        """
+        resp = self.client.get('/api/v2/users')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, 'application/json')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 2)
         self.assertDictEqual(
             data[0],
             {

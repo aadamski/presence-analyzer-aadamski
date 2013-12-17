@@ -11,7 +11,7 @@ function parseInterval(value) {
             avatar.attr('src', $("#user_id option:selected").attr('data-avatar'))
         });
         var loading = $('#loading');
-        $.getJSON("/api/v1/users", function(result) {
+        $.getJSON("/api/v2/users", function(result) {
             var dropdown = $("#user_id");
             $.each(result, function(item) {
                 dropdown.append($("<option />")
