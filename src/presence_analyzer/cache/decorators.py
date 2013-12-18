@@ -19,7 +19,7 @@ def cache(func=None, timeout=default_timeout):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        args_list = [func.__name__]
+        args_list = (func.__name__,) + args + tuple(kwargs.values())
         with lock_cache:
             cache_item = cache_backend.get(args_list)
             if not cache_item:
