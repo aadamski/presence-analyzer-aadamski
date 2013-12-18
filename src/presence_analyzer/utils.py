@@ -27,6 +27,7 @@ def jsonify(function):
                         mimetype='application/json')
     return inner
 
+
 @cache
 def get_data():
     """
