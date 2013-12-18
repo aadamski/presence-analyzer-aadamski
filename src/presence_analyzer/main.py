@@ -14,5 +14,7 @@ MAIN_DATA_CSV = os.path.join(
 app = Flask(__name__)  # pylint: disable-msg=C0103
 app.config.update(
     DEBUG=True,
-    DATA_CSV=MAIN_DATA_CSV
+    DATA_CSV=MAIN_DATA_CSV,
+    CACHE_BACKEND='presence_analyzer.cache.backends.base.MemoryBackend',
+    CACHE_BACKEND_TIMEOUT=600
 )
