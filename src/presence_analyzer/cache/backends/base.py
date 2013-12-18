@@ -64,7 +64,7 @@ class MemoryBackend(BaseBackend):
         key = self.make_key(args_list)
 
         item = self.storage[key]
-        if len(item):
+        if item:
             now_ts = int(time.time())
             if (now_ts - item['timestamp']) <= item['timeout']:
                 return item['data']
