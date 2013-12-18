@@ -51,11 +51,11 @@ class MemoryBackend(BaseBackend):
         key = self.make_key(args_list)
 
         with self._lock:
-            self.storage[key].update({
+            self.storage[key] = {
                 'data': value,
                 'timestamp': int(time.time()),
                 'timeout': timeout,
-            })
+            }
 
     def get(self, args_list):
         """
