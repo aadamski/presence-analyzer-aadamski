@@ -8,8 +8,7 @@ from flask import redirect, render_template, url_for, make_response, abort
 from jinja2 import TemplateNotFound
 
 from presence_analyzer.main import app
-from presence_analyzer.utils import (jsonify, get_data, mean,
-                                     group_by_weekday,
+from presence_analyzer.utils import (jsonify, get_data, mean, group_by_weekday,
                                      group_by_weekday_start_end)
 
 import logging
@@ -39,7 +38,18 @@ def users_view():
     """
     data = get_data()
     return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+            for i in data]
+
+
+@app.route('/api/v2/users', methods=['GET'])
+@jsonify
+def users_view_v2():
+    """
+    Users listing for dropdown.
+    """
+    data = get_data()
+    return [{'user_id': i, 'info': data[i]['info']}
+            for i in data]
 
 
 @app.route('/api/v1/mean_time_weekday/', methods=['GET'])

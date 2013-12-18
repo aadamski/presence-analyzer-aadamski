@@ -30,6 +30,7 @@ setup(
     ],
     entry_points="""
     [console_scripts]
+    cron = presence_analyzer.cron:fetch_users_data
     flask-ctl = presence_analyzer.script:run
 
     [paste.app_factory]
