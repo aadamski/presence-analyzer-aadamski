@@ -78,8 +78,8 @@ class MemoryBackend(BaseBackend):
         extra = [args[0], ]
         for x in args[1:]:
             if type(x) in allow_types:
-                extra.append(str(x))
+                extra.append(str(x).decode('utf-8'))
             else:
-                extra.append(repr(x))
-        key = '_'.join(extra)
+                extra.append(repr(x).decode('utf-8'))
+        key = u'_'.join(extra)
         return key
