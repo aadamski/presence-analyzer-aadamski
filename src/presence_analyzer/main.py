@@ -5,10 +5,19 @@ Flask app initialization.
 import os.path
 from flask import Flask
 
+DATA_DIR = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'runtime', 'data'
+)
 
 MAIN_DATA_CSV = os.path.join(
-    os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'sample_data.csv'
+    DATA_DIR, 'sample_data.csv'
 )
+
+MAIN_USER_XML = os.path.join(
+    DATA_DIR, 'users.xml'
+)
+
+USERS_URL = 'http://sargo.bolt.stxnext.pl/users.xml'
 
 
 app = Flask(__name__)  # pylint: disable-msg=C0103
@@ -16,5 +25,7 @@ app.config.update(
     DEBUG=True,
     DATA_CSV=MAIN_DATA_CSV,
     CACHE_BACKEND='presence_analyzer.cache.backends.base.MemoryBackend',
-    CACHE_BACKEND_TIMEOUT=600
+    CACHE_BACKEND_TIMEOUT=600,
+    DATA_XML=MAIN_USER_XML,
+    USERS_URL=USERS_URL
 )

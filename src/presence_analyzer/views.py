@@ -38,7 +38,18 @@ def users_view():
     """
     data = get_data()
     return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+            for i in data]
+
+
+@app.route('/api/v2/users', methods=['GET'])
+@jsonify
+def users_view_v2():
+    """
+    Users listing for dropdown.
+    """
+    data = get_data()
+    return [{'user_id': i, 'info': data[i]['info']}
+            for i in data]
 
 
 @app.route('/api/v1/mean_time_weekday/', methods=['GET'])

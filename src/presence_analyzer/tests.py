@@ -6,12 +6,17 @@ import os.path
 import json
 import datetime
 import unittest
+import time
 
-from presence_analyzer import main, views, utils
+from presence_analyzer import main, views, utils, cron
 
 
 TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
+)
+
+TEST_DATA_XML = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_users.xml'
 )
 
 
@@ -84,7 +89,28 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, u'name': u'User 10'})
+        self.assertDictEqual(data[0], {u'user_id': 10, 'name': u'User 10'})
+
+    def test_api_users_v2(self):
+        """
+        Test users listing (API v2).
+        """
+        resp = self.client.get('/api/v2/users')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, 'application/json')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 2)
+        self.assertDictEqual(
+            data[0],
+            {
+                u'user_id': 10,
+                'info': {
+                    u'name': u'Maciej Zięba',
+                    u'avatar': u'https://intranet.stxnext.pl/' +
+                    'api/images/users/10'
+                }
+            }
+        )
 
     def test_api_mean_time_weekday(self):
         """
@@ -178,7 +204,10 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         Before each test, set up a environment.
         """
-        main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({
+            'DATA_CSV': TEST_DATA_CSV,
+            'DATA_XML': TEST_DATA_XML
+        })
 
     def tearDown(self):
         """
@@ -194,10 +223,23 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsInstance(data, dict)
         self.assertItemsEqual(data.keys(), [10, 11])
         sample_date = datetime.date(2013, 9, 10)
-        self.assertIn(sample_date, data[10])
-        self.assertItemsEqual(data[10][sample_date].keys(), ['start', 'end'])
-        self.assertEqual(data[10][sample_date]['start'],
+        self.assertIn(sample_date, data[10]['dates'])
+        self.assertItemsEqual(
+            data[10]['dates'][sample_date].keys(),
+            ['start', 'end']
+        )
+        self.assertEqual(data[10]['dates'][sample_date]['start'],
                          datetime.time(9, 39, 5))
+        self.assertEqual(data[10]['info']['name'], u'Maciej Zięba')
+        self.assertEqual(
+            data[10]['info']['avatar'],
+            u'https://intranet.stxnext.pl/api/images/users/10'
+        )
+        self.assertEqual(data[11]['info']['name'], u'Maciej Dziergwa')
+        self.assertEqual(
+            data[11]['info']['avatar'],
+            u'https://intranet.stxnext.pl/api/images/users/11'
+        )
 
     def test_seconds_since_midnight(self):
         """

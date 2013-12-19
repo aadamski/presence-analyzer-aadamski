@@ -6,11 +6,18 @@ function parseInterval(value) {
 
 (function($) {
     $(document).ready(function(){
+        $('#user_id').change(function(){
+            var avatar = $("#avatar");
+            avatar.attr('src', $("#user_id option:selected").attr('data-avatar'))
+        });
         var loading = $('#loading');
-        $.getJSON("/api/v1/users", function(result) {
+        $.getJSON("/api/v2/users", function(result) {
             var dropdown = $("#user_id");
             $.each(result, function(item) {
-                dropdown.append($("<option />").val(this.user_id).text(this.name));
+                dropdown.append($("<option />")
+                    .val(this.user_id)
+                    .text(this.info.name)
+                    .attr('data-avatar', this.info.avatar));
             });
             dropdown.show();
             loading.hide();
