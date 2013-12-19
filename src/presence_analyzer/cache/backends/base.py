@@ -74,12 +74,12 @@ class MemoryBackend(BaseBackend):
         """
         Method making key from arguments.
         """
-        allow_types = (int, str, unicode)
-        extra = [args[0], ]
-        for x in args[1:]:
-            if type(x) in allow_types:
-                extra.append(str(x).decode('utf-8'))
+        safe_args = []
+        for arg in args:
+            if isinstance(arg, unicode):
+                safe_args.append(arg.encode('utf-8'))
             else:
-                extra.append(repr(x).decode('utf-8'))
-        key = u'_'.join(extra)
+                safe_args.append(str(arg))
+
+        key = '_'.join(safe_args)
         return key
