@@ -12,6 +12,7 @@ from lxml import etree
 from flask import Response
 
 from presence_analyzer.main import app
+from presence_analyzer.cache.decorators import cache
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
@@ -28,6 +29,7 @@ def jsonify(function):
     return inner
 
 
+@cache
 def get_data():
     """
     Extracts presence data from CSV file and groups it by user_id.

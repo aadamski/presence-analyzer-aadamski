@@ -9,7 +9,7 @@ from jinja2 import TemplateNotFound
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (jsonify, get_data, mean, group_by_weekday,
-                                     group_by_weekday_start_end)
+                                     group_by_weekday_start_end, cache)
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103

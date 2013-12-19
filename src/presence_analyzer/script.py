@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Startup utilities"""
+#pylint:skip-file
 import os
 import sys
 from functools import partial
