@@ -25,5 +25,7 @@ app.config.update(
     DEBUG=True,
     DATA_CSV=MAIN_DATA_CSV,
     DATA_XML=MAIN_USER_XML,
-    USERS_URL=USERS_URL
+    USERS_URL=USERS_URL,
+    CACHE_BACKEND='presence_analyzer.cache.backends.base.MemoryBackend',
+    CACHE_BACKEND_TIMEOUT=600
 )
