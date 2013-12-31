@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% set ie9_document_mode = True %}
+
 {% block head_js %}
     <script>
         google.load("visualization", "1", {packages:["corechart", "timeline"], 'language': 'pl'});
