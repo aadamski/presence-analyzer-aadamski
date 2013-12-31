@@ -90,14 +90,15 @@ def get_data():
             }
 
         for user_id in data.keys():
-            data[user_id]['info'] = xml_data.get(user_id, {
-                'name': 'User {0}'.format(user_id),
-                'avatar': '/api/images/users/0'
-            })
-            data[user_id]['info']['avatar'] = u'%s%s' % (
-                server_url,
-                data[user_id]['info']['avatar']
-            )
+            user_info = xml_data.get(user_id)
+            if user_info:
+                data[user_id]['info'] = user_info
+                data[user_id]['info']['avatar'] = u'%s%s' % (
+                    server_url,
+                    data[user_id]['info']['avatar']
+                )
+            else:
+                del data[user_id]
 
     return OrderedDict(sorted(data.iteritems(),
                               key=lambda x: x[1]['info']['name'],
