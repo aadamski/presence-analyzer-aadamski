@@ -4,6 +4,7 @@ Helper functions used in views.
 """
 
 import csv
+import locale
 from json import dumps
 from functools import wraps
 from datetime import datetime
@@ -99,7 +100,8 @@ def get_data():
             )
 
     return OrderedDict(sorted(data.iteritems(),
-                              key=lambda x: x[1]['info']['name']))
+                              key=lambda x: x[1]['info']['name'],
+                              cmp=locale.strcoll))
 
 
 def group_by_weekday(items):
