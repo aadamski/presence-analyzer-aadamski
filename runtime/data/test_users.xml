@@ -14,5 +14,25 @@
             <avatar>/api/images/users/11</avatar>
             <name>Maciej Dziergwa</name>
         </user>
+        <user id="12">
+            <avatar>/api/images/users/12</avatar>
+            <name>Leon Zawodowiec</name>
+        </user>
+        <user id="154">
+            <avatar>/api/images/users/154</avatar>
+            <name>Łukasz Kąkol</name>
+        </user>
+        <user id="2">
+            <avatar>/api/images/users/2</avatar>
+            <name>Żaneta Kaleta</name>
+        </user>
+        <user id="256">
+            <avatar>/api/images/users/256</avatar>
+            <name>Aneta Bełka</name>
+        </user>
+        <user id="100">
+            <avatar>/api/images/users/100</avatar>
+            <name>Aneta Cełka</name>
+        </user>
     </users>
 </intranet>
