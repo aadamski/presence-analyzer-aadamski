@@ -89,7 +89,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, 'name': u'User 10'})
+        self.assertDictEqual(data[0], {u'user_id': 11, 'name': u'User 11'})
 
     def test_api_users_v2(self):
         """
@@ -103,11 +103,11 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertDictEqual(
             data[0],
             {
-                u'user_id': 10,
+                u'user_id': 11,
                 'info': {
-                    u'name': u'Maciej Zięba',
+                    u'name': u'Maciej Dziergwa',
                     u'avatar': u'https://intranet.stxnext.pl/' +
-                    'api/images/users/10'
+                    'api/images/users/11'
                 }
             }
         )
