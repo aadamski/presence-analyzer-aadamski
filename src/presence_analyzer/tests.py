@@ -88,8 +88,8 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
-        self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, 'name': u'User 10'})
+        self.assertEqual(len(data), 7)
+        self.assertDictEqual(data[0], {u'user_id': 256, 'name': u'User 256'})
 
     def test_api_users_v2(self):
         """
@@ -99,15 +99,15 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
-        self.assertEqual(len(data), 2)
+        self.assertEqual(len(data), 7)
         self.assertDictEqual(
             data[0],
             {
-                u'user_id': 10,
+                u'user_id': 256,
                 'info': {
-                    u'name': u'Maciej Zięba',
+                    u'name': u'Aneta Bełka',
                     u'avatar': u'https://intranet.stxnext.pl/' +
-                    'api/images/users/10'
+                    'api/images/users/256'
                 }
             }
         )
@@ -221,7 +221,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         data = utils.get_data()
         self.assertIsInstance(data, dict)
-        self.assertItemsEqual(data.keys(), [10, 11])
+        self.assertItemsEqual(data.keys(), [2, 10, 11, 12, 100, 154, 256])
         sample_date = datetime.date(2013, 9, 10)
         self.assertIn(sample_date, data[10]['dates'])
         self.assertItemsEqual(
@@ -240,6 +240,20 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             data[11]['info']['avatar'],
             u'https://intranet.stxnext.pl/api/images/users/11'
         )
+
+    def test_order_data(self):
+        """
+        Test order users in data structure.
+        """
+        data = utils.get_data()
+        items = data.items()
+        self.assertEqual(256, items[0][0])
+        self.assertEqual(100, items[1][0])
+        self.assertEqual(12, items[2][0])
+        self.assertEqual(154, items[3][0])
+        self.assertEqual(11, items[4][0])
+        self.assertEqual(10, items[5][0])
+        self.assertEqual(2, items[6][0])
 
     def test_seconds_since_midnight(self):
         """

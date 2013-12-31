@@ -4,10 +4,12 @@ Helper functions used in views.
 """
 
 import csv
+import locale
 from json import dumps
 from functools import wraps
 from datetime import datetime
 from lxml import etree
+from collections import OrderedDict
 
 from flask import Response
 
@@ -97,7 +99,9 @@ def get_data():
                 data[user_id]['info']['avatar']
             )
 
-    return data
+    return OrderedDict(sorted(data.iteritems(),
+                              key=lambda x: x[1]['info']['name'],
+                              cmp=locale.strcoll))
 
 
 def group_by_weekday(items):
