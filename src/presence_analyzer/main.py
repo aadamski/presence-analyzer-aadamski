@@ -24,8 +24,6 @@ app = Flask(__name__)  # pylint: disable-msg=C0103
 app.config.update(
     DEBUG=True,
     DATA_CSV=MAIN_DATA_CSV,
-    CACHE_BACKEND='presence_analyzer.cache.backends.base.MemoryBackend',
-    CACHE_BACKEND_TIMEOUT=600,
     DATA_XML=MAIN_USER_XML,
     USERS_URL=USERS_URL,
     CACHE_BACKEND='presence_analyzer.cache.backends.base.MemoryBackend',
