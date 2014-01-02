@@ -93,7 +93,7 @@ def get_data():
             user_info = xml_data.get(user_id)
             if user_info:
                 data[user_id]['info'] = user_info
-                data[user_id]['info']['avatar'] = u'%s%s' % (
+                data[user_id]['info']['avatar'] = u'{0}{1}'.format(
                     server_url,
                     data[user_id]['info']['avatar']
                 )
